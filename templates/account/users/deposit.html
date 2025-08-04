@@ -1,0 +1,532 @@
+{% extends 'account/users/dashboard.html' %}
+
+
+
+{% block side-panel-right %}
+    
+{% endblock side-panel-right %}
+    
+  
+  {% block trading_view %}
+    
+  {% endblock trading_view %}
+
+  
+  {% block main %}
+  <div class="fixed-width"><br><br><br>
+    <div style='padding: 5px; background: orange; font-size: 12px; border-radius: 3px;'><i class='fa fa-info-circle'></i> Complete your account info. <a href='withdrawal_info.html' style='color: white'><b>Click Here</b></a></div><br>
+    <script>
+        $(".select7").select7();
+    </script>
+<style>
+.container {
+    padding: 15px;
+    background: var(--dark-blue);
+    border-radius: 5px;
+    color: var(--text-color);
+}
+
+form input,
+select {
+    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid var(--hover);
+    display: block;
+    width: 100%;
+    background: var(--primary);
+    color: var(--text-color);
+    margin: 10px 0;
+    font-size: 12px;
+}
+
+form label {
+    margin: 20px 0;
+    font-size: 14px;
+}
+
+form button {
+    background: dodgerblue;
+    padding: 9px 15px;
+    display: flex;
+    align-items: center;
+    color: white;
+    border: 1px solid dodgerblue;
+    border-radius: 3px;
+    margin: 5px 0;
+}
+
+.dol {
+    position: absolute;
+    right: 40px;
+    transform: translateY(-38px);
+    z-index: 1;
+    width: 24px;
+    height: 23px;
+    border-radius: 50%;
+    background: var(--text-color);
+    color: var(--text);
+}
+
+#modal {
+    position: fixed;
+    display: none;
+    top: 60px;
+    background: var(--modal);
+    width: 95%;
+    left: 50%;
+    color: white;
+    transform: translateX(-50%);
+    padding: 10px;
+    z-index: 999;
+    border-top: 3px solid dodgerblue;
+    border-radius: 5px;
+}
+
+@media screen and (min-width: 768px) {
+    #modal {
+        width: 60%;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    #modal {
+        width: 45%;
+    }
+}
+</style>
+
+<style>
+@media screen and (min-width: 768px) {
+    .fixed-width {
+        width: 100%;
+        margin: 0 0%;
+    }
+
+    .side-panel-right {
+        display: none;
+        width: 30%;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .fixed-width {
+        width: 80%;
+        transform: translateX(5%);
+        margin: 0 15%;
+    }
+
+    .side-panel-left {
+        width: 20%;
+        display: block;
+    }
+}
+</style>
+
+
+<div class="container">
+<h4>DEPOSIT</h4><br><br><br>
+    <form action="{% url 'deposit' %}" method="POST" enctype="application/x-www-form-urlencoded">
+        {% csrf_token %}
+    <div id="modal">
+                    <h3 style='color: white'>Payment Confirmation</h3><br>
+        <hr style='border: 1px solid transparent; border-bottom: 1px solid #1D2D40'><br>
+        <p style='font-size: 13px; color: white'>Your Order no. CXCbBLfTO6iVI has been placed successfully.</p><br>
+        <p style='font-size: 13px; color: white'>Please send <span id='modal_btc_rate'>0</span> <span class='modal_type'>USD</span> ($<span id='modal_amount'></span>) to the address below. The balance will appear in your account only after transaction gets confirmed by our team.</p><br>
+        <h4>Payment to the following <span class='modal_type'>USD</span> Wallet Address</h4><br>
+        <div style='display: grid; grid-template-columns: 1fr 4fr'>
+
+            <article>
+                <!-- <img src="../images/qrcode.jpg" id='qrcode' width="100px" height="100px" style='border-radius: 5px'> -->
+                <div id="qrcode" width="100px" height="100px" style='border-radius: 5px;padding:5px;background-color:#fff;'></div>
+            </article>
+
+            <article style='padding: 5px 10px'><br>
+                <p style='font-size: 14px'>Send Amount: <span style='color: white'><span id='modal_btc_rate_two'>0</span> <span class='modal_type'>BTC</span> ($<span id='modal_amount_two'>0</span>)</span></p>
+                <input type="text" readonly id="myInput" style='padding: 10px 30px' value='' >
+                <small id="addr" data-myvar="{{ address|escapejs }}"></small>
+                <p onclick="myFunction()" class='dol' style='background: transparent; color: #1AE0A1'><i class='material-icons'>content_copy </i></p><br>
+                <hr style='border: 1px solid transparent; border-bottom: 1px solid #1D2D40'><br>
+                <div style='display: flex'>
+                    <input type="hidden" name='amount' id='post_amount' required>
+                    <input type="hidden" name='eth' id='post_eth' required>
+                    <button type='submit' name='submit' style="button:hover{ cursor: pointer;}">Confirm</button>
+                    <p id='cancel' style='padding: 10px 7px; text-align: center; background: transparent; color: #d32929; width: 100px; border-radius: 3px; height: 35px; margin: 6px 5px; border:  1px solid #d32929; font-size: 13px'>Cancel</p>
+                </div>
+            </article>
+        </div>
+        <p style='font-size: 13px; color: white;'><i class="fa fa-info-circle"></i> Kindly ensure you select the appropriate networks for deposit.</p>
+        <p style='font-size: 13px; color: #d32929; margin: 5px 0'> <i class="fa fa-info-circle"></i> Kindly ensure you send exact amount as added in your deposit</p>
+        <p style='font-size: 13px; color: orange; margin: 5px 0'> <i class="fa fa-info-circle"></i>
+            Important Notice: After sending the appropriate amount you want to deposit to the wallet, kindly send your name, email and transaction ID to this email: support@myfxpromarket.com                then click on confirm to confirm your deposit so that your account will be funded immediately.
+        </p>
+    </div>
+<!----
+    <label for="">Select Assets</label>
+   
+    <select name="mode" id='select_input' style='text-align: left;' required>
+        <option value="">Choose Asset</option>
+        <option value="BTC">BTC</option>
+        <option value="ETH">ETH</option>
+        <option value="USDT">USDT</option>
+        <option value="USDC">USDC</option>
+        
+    </select>
+--->
+    {{form.asset}}
+    <div id="input-item" style='display: none'>
+        <label for="" id='label_amount'>Amount</label>
+       {{form.deposit_amount}}
+        <p class='dol'><i class='material-icons'>&#xe227;</i></p> <br>
+    </div>
+    <i style='font-size: 13px; color: var(--text); padding: 10px 0'><i class="fa fa-question-circle-o" style='font-size: 5px'></i> Deposit will appear in your account after payment is successfully made and approved by our team.</i><br><br><br><br>
+</form>
+
+<p id='modal_btn' style='padding: 10px 7px; font-weight: bold; text-align: center; background: dodgerblue; color: white; width: 130px; border-radius: 3px'>Make Payment</p>
+
+<p id="error" style='display: none'></p>
+<p id="currency_rate" style='display: none'></p>
+<p id="eth_rate" style='display: none'></p>
+</div>
+
+
+<script>
+var error = document.getElementById('error');
+
+var modal_btn = document.getElementById('modal_btn')
+var modal = document.getElementById('modal')
+var input_amount = document.getElementById('input_amount')
+var select_input = document.getElementById('select_input')
+var cancel = document.getElementById('cancel')
+var modal_btc_rate = document.getElementById('modal_btc_rate')
+var modal_amount = document.getElementById('modal_amount')
+var modal_btc_rate_two = document.getElementById('modal_btc_rate_two')
+var modal_amount_two = document.getElementById('modal_amount_two')
+var modal_type = document.querySelectorAll('.modal_type')
+var currency_rate = document.querySelector('#currency_rate')
+var eth_rate = document.querySelector('#eth_rate')
+var input_item = document.getElementById('input-item');
+var label_amount = document.getElementById('label_amount');
+var post_amount = document.getElementById('post_amount');
+var post_eth = document.getElementById('post_eth');
+var myInput = document.getElementById('myInput');
+var qrcode = document.getElementById('qrcode');
+var rate_price;
+const myVar = document.getElementById("addr").dataset.myvar;
+var rate = "https://min-api.cryptocompare.com/data/price?fsym=BTC&amp;tsyms=USD,BTC,ETH"
+fetch(rate)
+    .then(response => response.json())
+    .then(data => console.log(currency_rate.textContent = data.USD));
+
+var eth = "https://min-api.cryptocompare.com/data/price?fsym=BTC&amp;tsyms=USD,BTC,ETH"
+fetch(eth)
+    .then(response => response.json())
+    .then(data => console.log(eth_rate.textContent = data.ETH));
+
+
+
+input_amount.addEventListener('keyup', function() {
+    modal_amount.textContent = input_amount.value
+    modal_amount_two.textContent = input_amount.value
+
+})
+
+select_input.addEventListener('change', function() {
+    for (let i = 0; i < modal_type.length; i++) {
+        modal_type[i].textContent = select_input.value
+        input_item.style.display = 'block'
+        if (select_input.value == "BTC") {
+            label_amount.textContent = 'Amount (USD)'
+        } 
+    }
+})
+
+modal_btn.addEventListener('click', async function() {
+    // Validate inputs
+    const amount = parseFloat(input_amount.value);
+    if (!amount || amount <= 0 || !select_input.value) {
+        alert("Please enter a valid amount and select a currency");
+        return;
+    }
+
+     // Fetch real-time Bitcoin price from CoinGecko API
+     const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+        const data = await response.json();
+        const btcPrice = data.bitcoin.usd;
+
+        if (select_input.value === "BTC") {
+            // Calculate Bitcoin equivalent
+            const btcAmount = amount / btcPrice;
+
+            // Update modal display
+            modal.style.display = 'block';
+            
+            // Display USD amount
+            modal_amount.textContent = amount.toFixed(2);
+            modal_amount_two.textContent = amount.toFixed(2);
+            
+            // Display BTC equivalent (8 decimal places)
+            modal_btc_rate.textContent = btcAmount.toFixed(8);
+            modal_btc_rate_two.textContent = btcAmount.toFixed(8);
+
+            // Update form values
+            post_amount.value = btcAmount.toFixed(8);
+            post_eth.value = '';
+            myInput.value = myVar;
+            
+            // Update QR code (assuming this is BTC-related)
+            console.log(qrcode.src = '../images/qrcode_img/btcqrcode1718291456.html');
+            changeQrcode(myInput);
+        }
+});
+
+cancel.addEventListener('click', function() {
+    modal.style.display = 'none'
+})
+
+
+function myFunction() {
+    var copyText = document.getElementById("myInput");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(copyText.value);
+    swal("INFO!", "Copied the text:" + copyText.value, "info");
+}
+
+if (error.textContent == 'empty') {
+    swal("ERROR!", "Input's cannot be empty!", "warning");
+} else if (error.textContent == "success") {
+    setTimeout(() => {
+        swal("SUCCESS!", "Your Transaction is been processed...", "success");
+        window.location.href = 'trade-history.html'
+    }, 3000);
+} else if (error.textContent == "error") {
+    swal("ERROR!", "Sorry an error occurred. Please try again later", "warning");
+}
+
+
+
+// var xhr = new XMLHttpRequest();
+//         xhr.onreadystatechange = function () {
+//             console.log(xhr.responseText)
+//         }
+//         xhr.open('GET', 'https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD,BTC,ETH', true)
+//         xhr.send()
+</script>
+<div id="mode" style='display: none'></div>
+</div>
+
+<div id="random_count" style='display: none'></div>
+
+<script>
+
+// get current btc rate
+var btc = document.querySelectorAll('.btc')
+for (let i = 0; i < btc.length; i++) {
+    var url = 'https://blockchain.info/tobtc?currency=USD&amp;value='
+    fetch(url)
+        .then(response => response.json())
+        .then(data => console.log(btc[i].textContent = data));
+}
+// get current btc rate end
+
+// dark/light mode toggle
+var mode = document.getElementById('mode');
+if (mode.textContent == "light") {
+    root.classList.add('dark-mode')
+} else if (mode.textContent == "dark") {
+    root.classList.remove('dark-mode')
+}
+// dark/light mode toggle end
+
+var trade_button = document.querySelectorAll('.trade_button');
+var trade_amount = document.getElementById('trade_amount');
+var trade_pair = document.getElementById('trade_pair');
+var trade_pair1 = document.getElementById('trade_pair_one');
+var trade_pair2 = document.getElementById('trade_pair_two');
+var trade_pair3 = document.getElementById('trade_pair_three');
+
+var trade_pair_v1 = document.getElementById('trade_pair_one_v');
+var trade_pair_v2 = document.getElementById('trade_pair_two_v');
+var trade_pair_v3 = document.getElementById('trade_pair_three_v');
+
+var account_type = document.getElementById('account_type');
+var loader_img = document.getElementById('loader_img');
+var random_count = document.getElementById('random_count');
+var ac_item = document.getElementById('ac_item');
+var ac_name = document.getElementById('ac_name');
+var ac_price = document.getElementById('ac_price');
+var type_exe = document.getElementById('type_exe');
+var stop_loss = document.getElementById('stop_loss');
+var take_profit = document.getElementById('take_profit');
+
+
+var x = Math.random()*2;
+var y = Math.floor(x);
+random_count.textContent = y
+
+account_type.addEventListener('change', function () {
+    if (account_type.value == 'demo') {
+        ac_item.style.display = 'block'
+        ac_name.textContent = 'Demo Account'
+        ac_price.textContent = '100,000.00'
+        if (trade_pair1.value == "" && trade_pair2.value == "" && trade_pair3.value == "" && trade_amount.value == "") {
+            swal("ERROR!", "Input's cannot be empty", "warning");
+        }else {
+            for (let i = 0; i < trade_button.length; i++) {
+                trade_button[i].addEventListener('click', function () {
+                    if (trade_amount.value == "") {
+                        alert("Input's cannot be empty")
+                    }else {
+                        loader_img.style.display = 'block'
+                    setTimeout(() => {
+                        loader_img.style.display = 'none'
+                        if (random_count.textContent == 0) {
+                            swal("Trade Status!", "Trade Won", "success");  
+                            setTimeout(() => {
+                                window.location.href = 'index.html'
+                            }, 3000);                              
+                        }else {
+                            swal("Trade Status!", "Trade Loss", "error");
+                            setTimeout(() => {
+                                window.location.href = 'index.html'
+                            }, 3000);                              
+                        }
+                    }, 3000);
+
+                    }
+                })
+            }
+        }
+    }else {
+for (let i = 0; i < trade_button.length; i++) {
+        ac_item.style.display = 'block'
+        ac_name.textContent = 'Real Account'
+        ac_price.textContent = '0.00'
+
+    trade_button[i].addEventListener('click', function () {
+        if (trade_pair1.value == "" && trade_pair2.value == "" && trade_pair3.value == "" && trade_amount.value == "") {
+            swal("ERROR!", "Input's cannot be empty", "warning");
+        } else {
+            var xhr = new XMLHttpRequest();
+            var data = new FormData();
+            data.append('trade_pair', trade_pair.value)
+            data.append('pair', trade_pair_one_v.value)
+            data.append('pair2', trade_pair_two_v.value)
+            data.append('pair3', trade_pair_three_v.value)
+            data.append('trade_amount', trade_amount.value)
+            data.append('trade_pair', trade_pair.value)
+            data.append('type_exe', type_exe.value)
+            data.append('stop_loss', stop_loss.value)
+            data.append('take_profit', take_profit.value)
+            xhr.onreadystatechange = function () {
+                if (xhr.responseText == 'minimum') {
+                    swal("INFO!", "Minimum Trade is 100 USD", "info");                        
+                }else if (xhr.responseText == 'insufficient') {
+                    swal("ERROR!", "Insufficient Balance", "warning");
+                }else if (xhr.responseText == 'success') {
+                    trade_button[i].disabled = true
+                 swal("SUCCESS!", "Your Trade Request was successful", "success");
+                 setTimeout(() => {
+                     window.location.href = 'index.html'
+                 }, 3000);
+                }
+            }
+            xhr.open('POST.html', '../database/trade_script.html', true);
+            xhr.send(data);
+            // swal("INFO!", "Unable to complete trade at this time", "info");
+        }
+    })
+    
+    trade_pair.addEventListener('change', function () {
+        if (trade_pair.value == 'cryptocurrency') {
+            trade_pair1.style.display = 'block'
+            trade_pair2.style.display = 'none'
+            trade_pair3.style.display = 'none'
+            for (let i = 0; i < trade_button.length; i++) {
+                trade_button[i].addEventListener('click', function () {
+                    if (trade_pair1.value == "" && trade_amount.value == "") {
+                        swal("ERROR!", "Input's cannot be empty", "warning");
+                    } 
+                    else {
+                        // swal("INFO!", "Unable to complete trade at this time", "info");
+                    }
+                })
+            }
+        } else if (trade_pair.value == 'stock') {
+            trade_pair1.style.display = 'none'
+            trade_pair2.style.display = 'block'
+            trade_pair3.style.display = 'none'
+        } else if (trade_pair.value == 'indices') {
+            trade_pair1.style.display = 'none'
+            trade_pair2.style.display = 'none'
+            trade_pair3.style.display = 'block'
+            }
+        })
+    }
+}
+})
+
+</script>
+</body>
+
+
+</html><script src="js/jquery.min.js"></script>
+<script src="js/qrcode.min.js"></script>
+<script>
+function changeQrcode(data) {
+    // document.getElementById("qrcode").innerHtml = ""
+    $("#qrcode").empty()
+    var qrcode = new QRCode(document.getElementById("qrcode"), {
+        text: data,
+        width: 100,
+        height: 100,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        padding: 1,
+        correctLevel: QRCode.CorrectLevel.H
+    });
+}
+</script>
+  {% endblock main %}
+    
+      
+    
+
+
+<script>
+    const amount = document.getElementById('deposit_amount');
+    const button = document.getElementById('btn');
+    const asset = document.getElementById('btc-value');
+
+    function ShowAmount(name, pay){
+        console.log('the enter amount is', name, 'and the asset is ', pay);
+    }
+
+    button.addEventListener('click', (event) => {
+        event.preventDefault();
+        ShowAmount(amount.value, asset.value);
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% block refer_content %}
+    
+{% endblock refer_content %}
+
+
+{% block script_content %}
+    
+{% endblock script_content %}
+    

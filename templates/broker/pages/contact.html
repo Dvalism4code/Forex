@@ -1,0 +1,195 @@
+{% extends 'broker/pages/base.html' %}
+{% load static %}
+{% block hero-section %}
+
+<div class="Optimal-breadcrumb-section">
+  <div class="container">
+    <div class="breadcrumbs">
+      <h1 class="wow fadeInUpX" data-wow-delay="0s">Get in touch</h1>
+      <nav aria-label="breadcrumb" class="wow fadeInUpX" data-wow-delay="0.15s">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page"> Get in touch</li>
+        </ol>
+      </nav>
+    </div>
+
+  </div>
+  <div class="Optimal-shape8">
+    <img src="{% static 'assets/images/shape8.png' %}" alt="">
+  </div>
+  <div class="Optimal-shape9">
+    <img src="{% static 'assets/images/shape8.png' %}" alt="">
+  </div>
+</div>
+<!-- End breadcrumb -->
+{% endblock hero-section %}
+    
+
+{% block client-section %}
+
+<div class="section bg-warning-300 Optimal-section-padding3">
+  <div class="container">
+    <div class="Optimal-section-title">
+      <h2>Want communicate directly?</h2>
+    </div>
+    <div class="row">
+      <div class="col-lg-4 col-md-6">
+        <div class="Optimal-iconbox-wrap4 wow fadeInUpX" data-wow-delay="0s">
+          <div class="Optimal-iconbox-icon4">
+            <img src="{% static 'assets/images/search_icon.png' %}" alt="">
+          </div>
+          <div class="Optimal-iconbox-data4">
+            <h4>Careers</h4>
+            <p>Want to join our team, reach and be a part of our ever growing and innonating team.</p>
+            <!-- <a class="Optimal-icon-btn" href="">Discover More <img src="assets/images/svg/arrow-black-right.svg" alt=""></a> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="Optimal-iconbox-wrap4 wow fadeInUpX" data-wow-delay=".10s">
+          <div class="Optimal-iconbox-icon4">
+            <img src="{% static 'assets/images/wats.png' %}" alt="">
+          </div>
+          <div class="Optimal-iconbox-data4">
+            <h4>Help & Support</h4>
+            <p>Our highly trained customer representatives are always avaliable to with help & support.</p>
+            <!-- <a class="Optimal-icon-btn" href="">Discover More <img src="assets/images/svg/arrow-black-right.svg" alt=""></a> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 offset-lg-0 offset-md-3">
+        <div class="Optimal-iconbox-wrap4 wow fadeInUpX" data-wow-delay=".20s">
+          <div class="Optimal-iconbox-icon4">
+            <img src="{% static 'assets/images/sign.png' %}" alt="">
+          </div>
+          <div class="Optimal-iconbox-data4">
+            <h4>Ask Question</h4>
+            <p>Got questions? Feel free to reach us on any of our contact platforms and well get back to you.</p>
+            <!-- <a class="Optimal-icon-btn" href="">Discover More <img src="assets/images/svg/arrow-black-right.svg" alt=""></a> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End section -->
+
+<div class="section Optimal-section-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-5 col-lg-6 col-md-10">
+        <div class="Optimal-default-content contact-page">
+          <h2>Have any questions? We will talk to you sincerely anytime</h2>
+          <p>If you have any questions about registration, please fill out the form and our team will get back to you within 24 hours.</p>
+          <div class="Optimal-contact-info">
+            <ul>
+              <li>
+                <a href="tel:123">
+                  <div class="Optimal-contact-info-icon">
+                    <img src="{% static 'assets/images/call.svg' %}" alt="">
+                  </div>
+                  <h5>Call us</h5>
+                  <!-- <p>+1 Fxpro Market</p> -->
+                </a>
+              </li>
+              <li>
+                <a href="mailto:name@email.com">
+                  <div class="Optimal-contact-info-icon">
+                    <img src="{% static 'assets/images/email.svg' %}" alt="">
+                  </div>
+                  <h5>Email us</h5>
+                  <p>support@myfxpromarket.com</p>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <div class="Optimal-contact-info-icon">
+                    <img src="{% static 'assets/images/map.svg' %}" alt="">
+                  </div>
+                  <h5>Office address</h5>
+                  <p>4132 Thornridge City, New York.</p>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-6 col-lg-6 offset-xl-1">
+        <div class="Optimal-contact-wrap  wow fadeInUpX">
+                      <form action="#" method="post">
+          <div class="Optimal-input-field">
+            <label>Your name</label>
+            <input type="text" name='name' value='' placeholder="Enter your full name" required>
+          </div>
+          <div class="Optimal-input-field">
+            <label>Email address</label>
+            <input type="email" name='email' value='' placeholder="Enter your email" required>
+          </div>
+
+          <div class="Optimal-input-field">
+            <label>Subject</label>
+            <input type="text" name='subject' value='' placeholder="" required>
+          </div>
+
+          <div class="Optimal-input-field">
+            <label>Write your message</label>
+            <textarea name="textarea" value='' placeholder="Write us your question here..." required></textarea>
+          </div>
+          <button id="Optimal-input-submit" name='submit'>Send Message</button>
+</form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End section -->
+
+  
+  <!-- End services section -->
+{% endblock client-section %}
+
+
+{% block features %}
+
+{% endblock features %}
+
+
+{% block nft %}
+
+  <!-- End section -->
+
+{% endblock nft %}
+
+
+{% block try-section %}
+    
+
+{% endblock try-section %}
+
+{% block apps-section %}{% endblock apps-section %}
+
+
+{% block testimonail %}{% endblock testimonail %}
+
+
+{% block cta-section %}
+
+{% endblock cta-section %}
+
+
+{% block faq %}
+  
+{% endblock faq %}
+  
+  
+
+
+  
+  
+
+    
+    
+
+ 
+
