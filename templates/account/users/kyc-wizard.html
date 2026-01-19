@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- kyc_wizard.html -->
+<div class="kyc-wizard-container">
+    <h2>KYC Verification - Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</h2>
+    
+    <!-- Progress indicator -->
+    <div class="progress-bar">
+        <div style="width: {{ wizard.steps.percent }}%;"></div>
+    </div>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ wizard.management_form }}
+        
+        {% if wizard.form.forms %}
+            {{ wizard.form.management_form }}
+            {% for form in wizard.form.forms %}
+                {{ form.as_p }}
+            {% endfor %}
+        {% else %}
+            {{ wizard.form.as_p }}
+        {% endif %}
+        
+        <div class="wizard-buttons">
+            {% if wizard.steps.prev %}
+                <button type="submit" name="wizard_goto_step" value="{{ wizard.steps.prev }}" class="btn-prev">
+                    Previous
+                </button>
+            {% endif %}
+            
+            <button type="submit" class="btn-next">
+                {% if wizard.steps.last %}
+                    Submit
+                {% else %}
+                    Next
+                {% endif %}
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

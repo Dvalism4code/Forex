@@ -1,0 +1,24 @@
+STATIC_ROOT = '/home/peophtkq/sites/static/'
+
+
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'peophtkq_finnex_db',
+        'USER': 'peophtkq_jailbreak',
+        'PASSWORD': 'JAILBREAK@007',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}
+
+
+
+
+
+import pymysql
+
+
+pymysql.install_as_MySQLdb()

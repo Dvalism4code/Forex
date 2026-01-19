@@ -1,0 +1,273 @@
+{% extends 'account/users/dashboard.html' %}
+{% load static  %}
+
+{% block side-panel-right %}
+    
+{% endblock side-panel-right %}
+    
+  
+  {% block trading_view %}
+    
+  {% endblock trading_view %}
+{% block main %}    
+
+<div class="fixed-width"><br><br><br>
+    <br>
+    {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+    <body>
+
+     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+            margin: 50px auto;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .method-icon {
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .wth-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .wth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        .info-text {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .method-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* form error styles */
+        .alert{
+            color: red;
+            margin-bottom: 10px;
+            padding: 5px;
+            width: 100%;
+            background: #ffe6e6;
+            border: 1px solid red;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        @media screen and (max-width: 600px) {
+            
+            h2 {
+                font-size: 22px;
+            }
+        }
+        
+    </style>
+    <div class="container">
+        <h2>💰 Withdrawal Request</h2>
+        
+        
+        
+        <form method="POST" action="{% url 'withdraw' %}" id="withdrawalForm enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="{{ form.amount.id_for_label }}">Amount ($)</label>
+                {{ form.amount }}
+                {% if form.amount.errors %}
+                    <span class="error">{{ form.amount.errors }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.method.id_for_label }}">Withdrawal Method</label>
+                {{ form.method }}
+            </div>
+
+            <div id="crypto-fields" class="hidden">
+                <div class="form-group">
+                    <label for="{{ form.withdraw_address.id_for_label }}">Wallet Address</label>
+                    {{ form.withdraw_address }}
+                </div>
+            </div>
+
+            <div id="bank-fields" class="hidden">
+                <div class="form-group">
+                    <label for="{{ form.bank_name.id_for_label }}">Bank Name</label>
+                    {{ form.bank_name }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.bank_account_name.id_for_label }}">Account Holder Name</label>
+                    {{ form.bank_account_name }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.bank_account_number.id_for_label }}">Account Number</label>
+                    {{ form.bank_account_number }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.swift_code.id_for_label }}">SWIFT/BIC Code</label>
+                    {{ form.swift_code }}
+                </div>
+            </div>
+
+            <button type="submit" class="wth-btn">Submit Withdrawal Request</button>
+        </form>
+    </div>
+
+    <!-- Include the JavaScript from the artifact above -->
+
+    <script>
+        const methodSelect = document.getElementById('withdrawal-method');
+        const cryptoFields = document.getElementById('crypto-fields');
+        const bankFields = document.getElementById('bank-fields');
+        const withdrawAddress = document.getElementById('id_withdraw_address');
+        const bankInputs = {
+            bank_name: document.getElementById('id_bank_name'),
+            bank_account_name: document.getElementById('id_bank_account_name'),
+            bank_account_number: document.getElementById('id_bank_account_number'),
+            swift_code: document.getElementById('id_swift_code')
+        };
+
+        // Toggle fields based on withdrawal method
+        methodSelect.addEventListener('change', function() {
+            const method = this.value;
+            
+            // Hide all conditional fields first
+            cryptoFields.classList.add('hidden');
+            bankFields.classList.add('hidden');
+            
+            // Remove required attribute from all conditional fields
+            withdrawAddress.removeAttribute('required');
+            Object.values(bankInputs).forEach(input => input.removeAttribute('required'));
+            
+            // Show and require fields based on method
+            if (method === 'BTC' || method === 'ETH' || method === 'USDT') {
+                cryptoFields.classList.remove('hidden');
+                withdrawAddress.setAttribute('required', 'required');
+            } else if (method === 'Bank') {
+                bankFields.classList.remove('hidden');
+                Object.values(bankInputs).forEach(input => input.setAttribute('required', 'required'));
+            }
+        });
+
+        // Form validation
+        document.getElementById('withdrawalForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const method = methodSelect.value;
+            const amount = document.getElementById('amount').value;
+            
+            if (!method) {
+                alert('Please select a withdrawal method');
+                return;
+            }
+            
+            if (!amount || amount <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+            
+            // Validate based on method
+            if ((method === 'BTC' || method === 'ETH' || method === 'USDT') && !withdrawAddress.value) {
+                alert('Please enter your wallet address');
+                return;
+            }
+            
+            if (method === 'Bank') {
+                for (let [key, input] of Object.entries(bankInputs)) {
+                    if (!input.value) {
+                        alert(`Please enter ${key.replace('_', ' ')}`);
+                        return;
+                    }
+                }
+            }
+            
+            // If using Django, submit the form normally
+            // this.submit();
+            
+            // Demo: Show submission data
+            alert('Withdrawal request submitted!\n\nMethod: ' + method + '\nAmount: $' + amount);
+        });
+    </script>
+</body>
+
+{% endblock main %}

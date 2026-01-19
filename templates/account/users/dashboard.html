@@ -8,16 +8,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello , welcome to Fxpro Market</title>
+    <title>Hello , welcome to Finnexglobecon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="shortcut icon" href="{% static 'assets/images/dashboard-logo.png' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'assets/font-awesome-4.7.0/css/font-awesome.min.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"  rel="stylesheet">
     <link rel="stylesheet" href="{% static 'assets/css/dashboard.css' %}">
     <link rel="stylesheet" href="{% static 'assets/includes/selectable/jquery-select7.css' %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="{% static 'assets/includes/selectable/jquery-select7.js' %}"></script>
-    <!-- <script src="../includes/selectable/alert.js"></script> -->
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.17/dist/sweetalert2.min.css">
     <style>
         .select7__current {
             background: var(--dark-blue);
@@ -55,14 +57,18 @@
 
         <article>
             <ul>
-            
+             
+        <!-- Non-field errors -->
+       
+
                 <li><img src="{% static 'assets/images/dashboard-logo.png' %}" width="130px"></li>
                 <li style="display: flex; justify-content: space-between; align-items: center;">
                     <article style="display: flex; padding: 5px;">
                         <img src="{% static 'assets/images/dollar-sign.svg' %}" width="40px" style="margin-right: 5px;">
+                                  
                         <div style="font-size: 15px;">
                             <b style='color: var(--text-color)'>Real Account</b><br>
-                            <span style="font-size: 12px; color: #0BC2D2;">{{account.accumulating_balance}} USD</span><br>
+                            <span style="font-size: 12px; color: #0BC2D2;">{{total_balance}} USD</span><br>
                             <span style="font-size: 12px; color: #7CBBE3;"><span class="btc"></span> BTC <br>
                                 <span style="font-size: 12px; color: #7CBBE3; display: none"><span></span> ETH
 
@@ -72,9 +78,9 @@
                    
                     <article style="margin: 0 10px;" id='dropdown-btn'>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <button style='overflow:hidden; width: 50px; height: 50px; border: 1px solid transparent'><img src="../images/index.html" width="100%" height='100%' style='border-radius: 50%'></button>
+                            <button style='overflow:hidden; width: 50px; height: 50px; border: 1px solid transparent'><img src="{% static '../images/index.html' %}" width="100%" height='100%' style='border-radius: 50%'></button>
                             <span style="font-size: 12px; margin: 0 10px;">
-                                <span style="color: #0fec73;">Hello {{user.username}} </span><br>
+                                <span style="color: #0fec73;">Hello {{user.first_name}} </span><br>
                                 <span style="color: var(--text-color);"></span>
                             </span>
                         </div>
@@ -95,7 +101,7 @@
            
 
             <br>
-                        <a href="index.html">
+                        <a href="{% url 'dashboard' %}">
                 <li class="active"><i class="material-icons">dashboard</i> Dashboard</li>
             </a>
             <span style="font-size: 10px; font-weight: bold; padding: 0 10px; color: #6494AE;">APPS</span>
@@ -122,10 +128,10 @@
             <a href="crypto.html">
                 <li class=""><i class="material-icons">verified_user</i> Packages</li>
             </a>
-            <a href="signal.html">
+            <a href="{% url 'signal' %}">
                 <li class=""><i class="material-icons">online_prediction</i> Signal</li>
             </a>
-            <a href="kyc.html">
+            <a href="{% url 'kyc' %}">
                 <li class=""><i class="material-icons">content_copy</i> AML / KYC</li>
             </a>
             <a href="settings.html">
@@ -149,7 +155,7 @@
         <select name="" id="account_type">
             <option value="">---</option>
             <option value="demo">Demo Account ($100,000.00)</option>
-            <option value="real">Real Account ({{account.accumulating_balance}})</option>
+            <option value="real">Real Account ({{ total_balance }})</option>
         </select><br><br>
 
         <style>
@@ -334,7 +340,7 @@
         <article style="color: #6494AE; line-height: 20px;"><br>
             <span style="font-size: 10px; font-weight: bold; color: var(--text-color)">REAL ACCOUNT</span><br>
             <span style="font-size: 17px; color: dodgerblue; font-weight: bold;"><span class="btc"></span> <sub>BTC</sub></span><br>
-            <span style="font-size: 13px;">{{account.accumulating_balance}} <sub>USD</sub></span><br>
+            <span style="font-size: 13px;">${{ total_balance }} <sub>USD</sub></span><br>
             <div style="display: flex; align-items: center; font-size: 13px; color: dodgerblue;">
                 <a href="pay.html" style='color: dodgerblue'><i class="material-icons" style="font-size: 13px;">account_balance_wallet</i> Deposit </a>
                 <a href="withdrawal.html" style='color: dodgerblue'><i style="margin: 0 0px 0 20px; font-size: 13px;" class="material-icons">account_balance_wallet</i> Withdraw </a>
@@ -352,7 +358,7 @@
                 <a href="settings.html">
                     <li><i class="material-icons" style="font-size: 20px;">settings</i> settings</li>
                 </a>
-                <a href="logout.html">
+                <a href="{% url 'logout' %}">
                     <li><i class="material-icons" style="font-size: 20px;">power_settings_new</i> Sign Out</li>
                 </a>
                 <span>
@@ -374,7 +380,11 @@
     </div>
 {% endblock side-dropdown %}
 {% block main %}
+
+
+
     <div class="fixed-width"><br><br><br>
+ 
         <div style='padding: 5px; background: orange; font-size: 12px; border-radius: 3px;'><i class='fa fa-info-circle'></i> Complete your account info. <a href='withdrawal_info.html' style='color: white'><b>Click Here</b></a></div><br>
         <script>
             $(".select7").select7();
@@ -498,13 +508,16 @@
                             {
                                 "proName": "BITSTAMP:ETHUSD",
                                 "title": "Ethereum"
-                            }
+                            },
                         ],
-                            "showSymbolLogo": true,
-                            "colorTheme": "dark",                                    "isTransparent": false,
-                                        "displayMode": "adaptive",
+                            {
+                                "showSymbolLogo": true,
+                            "colorTheme": "dark",
+                             "isTransparent": false,
+                                    "displayMode": "adaptive",
                                             "locale": "en"
-                    }
+                            },
+                    };
                 </script>
         </div>
         <!-- TradingView Widget END -->
@@ -527,7 +540,7 @@
                 <article>
                     <span>
                         <b style='font-size: 13px'>Capital</b><br>
-                        <span style='font-size: 18px;'>${{account.acount_balance }} </span><br>
+                        <span style='font-size: 18px;'>${{account.capital}} </span><br>
                         <span style='font-size: 11px'>BTC <span class="btc"></span></span><br>
                     </span>
 
@@ -540,7 +553,7 @@
                     <span>
                         <b style='font-size: 13px'>Accumulating Balance </b><br>
                         <span class='btc-rate' hidden></span>
-                        <span style='font-size: 18px;'>$<span>{{account.accumulating_balance }}</span></span><br>
+                        <span style='font-size: 18px;'>$<span>{{ account.accumulating_balance  }}</span></span><br>
                         <span style='font-size: 11px'>BTC <span class="btc-amount"></span></span><br>
                     </span>
 
@@ -708,7 +721,7 @@ var btc_amount = document.querySelectorAll('.btc-amount');
             }, 2000);
         });
     </script>
-<script src="../../code.tidio.co_443/kqttlibecn04j1cnv7bnpa7w6vkhegny.js" async></script>
+
 
     <div id="mode" style='display: none'></div>
 </div>

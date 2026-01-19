@@ -1,0 +1,48 @@
+{% load static  %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdrawal Success</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        
+    </style>
+</head>
+<body>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Show success alert on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Withdrawal Submitted!',
+                html: 'Your withdrawal request has been received.<br>Redirecting to dashboard in <b></b> seconds.',
+                timer: 5000,
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    const b = Swal.getHtmlContainer().querySelector('b');
+                    const timerInterval = setInterval(() => {
+                        b.textContent = Math.ceil(Swal.getTimerLeft() / 1000);
+                    }, 100);
+                },
+                willClose: () => {
+                    // Redirect to dashboard after alert closes
+                    window.location.href = "{% url 'dashboard' %}";
+
+                }
+            });
+        });
+
+     
+       
+
+       
+    </script>
+</body>
+</html>

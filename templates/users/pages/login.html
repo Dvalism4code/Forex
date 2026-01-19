@@ -8,29 +8,78 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+   
+   {% if title %}
+    <title>Finnexglobecon - {{ title }}</title>
+   {% else %}
+    <title>Login</title>
+   {% endif %}
     
-    <!---<link rel="stylesheet" href="{% static 'css/main.css' %}">--->
-    <title>Hello, world!</title>
 
     <style>
       body {
-        background-color: rgb(189, 163, 135);
+        background-color: rgb(194, 174, 146);
+        min-height: 100vh;
       }
-
+      .form-hero h3 {
+        color: rgb(15, 15, 15);
+        font-weight: 600;
+        font-size: 2rem;
+      }
    .form-container {
-        width: clamp(300px, 50%, 600px);
-        margin: 70px auto;
+        
+        margin: 40px auto;
         border-radius: 5px 5px 0px 0px ;
-        height: 500px;
-      }
-      form {
+        height: 400px;
         background-color: #fff;
-        padding: 20px;
+         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+         width: 300px;
+      }
+      /* Tablets */
+      @media screen and (min-width: 481px) and (max-width: 768px) {
+        .form-container {
+          width: 300px;
+          margin: 20px auto;
+          height: 400px;
+        }
+        
+      }
+      /* Desktops */
+      @media screen and (min-width: 769px) and (max-width: 1024px) {
+        .form-container {
+          width: 350px;
+          margin: 20px auto;
+          height: 450px;
+        }
+      }
+      /* Large Desktops */
+      @media screen and (min-width: 1024px) and (max-width: 1280px) {
+        .form-container {
+          width: 300px;
+          margin: 20px auto;
+          height: 400px;
+        } 
+      } 
+      /* Extra Large Desktops */
+      @media screen and (min-width: 1281px) {
+        .form-container {
+          width: 350px;
+          margin: 20px auto;
+          height: 450px;
+        }
+        ul li {
+          padding: 5px;
+        }
+        .btn {
+          margin-top: 20px;
+        }
+      } 
+
+      form {
+        padding: 20px 20px 0px 20px;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        max-width: 400px;
-        margin: 10px;
-        height: 100%;
+       
+        color: #000;
       }
      
 
@@ -56,11 +105,17 @@
       .register-footer {
         margin-bottom: 50px;
       }
-      .privacy > small > a, .return-home > small > a {
+      .privacy {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+      }
+      .privacy > small > a{
         color: white;
         text-decoration: none;
         color: white;
-        font-size: 1.2rem;
+      
       }
       hr {
         color: white;
@@ -84,9 +139,7 @@
       .form-group input, select {
         margin-bottom: 25px;
       }
-      .form-group label {
-        font-weight: bold;
-      }
+      
       .form-check {
         margin-bottom: 15px;
       }
@@ -106,11 +159,12 @@
       }
       ul {
         list-style-type: none;
-       
+       background-color: rgb(243, 165, 165);
+        border-radius: 5px;
       }
       ul li {
         color: red;
-        font-size: clamp(0.8rem, 1.5vw, 1.2rem);
+        font-size: x-small
       }
       
     </style>
@@ -118,17 +172,30 @@
  
  
   <body>
-    
-    <div class=" form-container">
-     <form method="POST" action="{% url 'login' %}" id="register-form">
-  {% csrf_token %}
-
-  <div class="form-hero">
-    <div class="logo d-flex justify-content-center pb-3">
+     <div class="logo d-flex justify-content-center pt-3">
       <img src="{% static 'assets/images/dashboard-logo.png' %}" class="img-fluid" style="width: 100px;" alt="">
     </div>
   </div>
 
+    <div class="container ">
+      <div class=" form-container ">
+       <div class="form-hero">
+        <h3 class="text-center">Login Account</h3>
+        
+       
+         {% if messages %}
+          <div class="alert alert-info"  style="margin-bottom: 0px;">
+            {% for message in messages %}
+              <p><i  style="width: 100%;"> {{ message }} </i></p>
+            {% endfor %}
+          </div>
+        {% endif %}
+       
+          
+     <form method="POST" action="{% url 'login' %}" id="register-form">
+  {% csrf_token %}
+
+ 
   <div class="form-details">
     <div class="form-group">
       {{ form }}
@@ -138,35 +205,73 @@
       
     </div>
     
-    <div class="form-group">
-      <div class="form-check">
-        <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
-        <label class="form-check-label" for="terms">
-          I agree to the <a href="#">Terms and Conditions</a>
-        </label>
-      </div>
-    </div>
-
-    <button type="submit" class="btn btn-primary" id="submit-btn">Register</button>
+    <button type="submit" class="btn btn-primary" id="submit-btn">Login</button>
   </div>
-
+<div class="privacy d-flex  mt-3">
+    <small>New on our platform? <a href="{% url 'register' %}" style="color: rgb(185, 135, 6); margin-left: 3px; "> Create Account</a></small>
+  </div>
 </form>
-
-
     </div>
-
+    </div>
+    </div>
+<footer>
+ <div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12 text-center register-footer">
+      <hr>
+      <small class="text-white">© 2025 Finnexglobecon. All rights reserved.</small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 text-center  return-home">
+      <small><a class="text-light" href="{% url 'home' %}">Return to Home</a></small>
+    </div>
+  </div>
+    
+ </div>
+</footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
  <!--Passing django data to Javascrippt-->
 {{ form.errors|json_script:"form-errors"}}
-<script >
-  const formErrors = document.getElementById('form-errors');
-  let errors = JSON.parse(formErrors.textContent);
- if (errors){
-  for(let error in errors){
-    console.log(error, errors[error]);
-  }
- }
+    <script>
+      // Function to display form errors
+      function displayFormErrors() {
+        const formErrors = JSON.parse(document.getElementById('form-errors').textContent);
+        const form = document.getElementById('register-form');
+        
+        // Clear previous error messages
+        const errorList = form.querySelector('ul');
+        if (errorList) {
+          errorList.remove();
+        }
+
+        // Create a new error list
+        const ul = document.createElement('ul');
+        
+        for (const field in formErrors) {
+          formErrors[field].forEach(error => {
+            const li = document.createElement('li');
+            li.textContent = error;
+            ul.appendChild(li);
+          });
+          // Highlight the field with an error
+          const inputField = form.querySelector(`[name="${field}"]`);
+          if (inputField) {
+            inputField.classList.add('form-error');
+            inputField.placeholder = 'Please correct this field';
+            inputField.style.borderColor = 'red'; 
+            inputField.style.backgroundColor = '#f8d7da'; // Light red background
+
+          }
+        }
+        
+        // Append the error list to the form
+        form.prepend(ul);
+      }
+
+      // Call the function to display errors on page load
+      displayFormErrors();  
 </script>
   </body>
 </html>

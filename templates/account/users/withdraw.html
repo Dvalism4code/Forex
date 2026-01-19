@@ -1,0 +1,276 @@
+{% extends 'account/users/dashboard.html' %}
+
+
+
+{% block side-panel-right %}
+    
+{% endblock side-panel-right %}
+    
+  
+  {% block trading_view %}
+    
+  {% endblock trading_view %}
+
+
+
+{% block main %}
+{% load static  %}
+
+<div class="fixed-width"><br><br><br>
+    <div style='padding: 5px; background: orange; font-size: 12px; border-radius: 3px;'><i class='fa fa-info-circle'></i> Complete your account info. <a href='#' style='color: white'><b>Click Here</b></a></div><br>
+    <script>
+        $(".select7").select7();
+    </script>
+<style>
+.container {
+    padding: 15px;
+    background: var(--dark-blue);
+    border-radius: 5px;
+    color: var(--text-color);
+}
+form input, select {
+    padding: 10px; 
+    border-radius: 3px;
+    border: 1px solid var(--hover);
+    display: block;
+    width: 100%;
+    background: var(--primary);
+    color: var(--text-color);
+    margin: 10px 0;
+    font-size: 12px;
+}
+form label {
+    margin: 20px 0;
+    font-size: 14px;
+}
+form button, #pbtn {
+    background: dodgerblue;
+    padding: 9px 15px;
+    display: flex;
+    align-items: center;
+    color: white;
+    border: 1px solid dodgerblue;
+    border-radius: 3px;
+    margin: 5px 0;
+}
+#dol {
+    position: absolute; 
+    right: 40px; 
+    transform: translateY(-38px); 
+    z-index: 1; 
+    width: 24px; 
+    height: 23px; 
+    border-radius: 50%; 
+    background: var(--primary); 
+    color: var(--text);
+}
+#bit, #ethereum, #bank, #cashapp, #amt {
+    display: none;
+}
+@media screen and (min-width: 768px) {}
+
+@media screen and (min-width: 1200px) {}
+</style>
+
+
+<style>
+    @media screen and (min-width: 768px) {
+        .fixed-width {
+            width: 100%;
+            margin: 0 0%;
+        }
+        
+        .side-panel-right {
+            display: none;
+            width: 30%;
+        }
+    }
+
+    @media screen and (min-width: 1200px) {
+        .fixed-width {
+            width: 80%;
+            transform: translateX(5%);
+            margin: 0 15%;
+        }
+
+        .side-panel-left {
+            width: 20%;
+            display: block;
+        }
+    }
+</style>
+
+<div class="container">
+<center><div id="loader" style='display: none'><img src="{% static 'assets/images/loader.svg' %}" width="70px" style=' z-index: 9999999'></div></center><br><br>
+<center><div><img src="images/paypal.html" id='icon' style='display: none' width="70px" ></div></center>
+<center>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-info">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+</center>
+<h4>Withdrawal</h4><br>
+
+    <form method="POST" action="{% url 'withdraw' %}" id="withdrawal_form" enctype="multipart/form-data">
+        {% csrf_token %}
+
+
+        <!-- Withdrawal Type -->
+        <div class="form-group" id="select-input">
+            <label for="{{ form.select_withdraw_method.id_for_label }}">Select Withdrawal Method:</label>
+            {{ form.select_withdraw_method }}
+        </div>
+
+         <!-- Withdrawal Address (Crypto) -->
+        <div class="form-group" id="withdraw_address">
+            <label for="{{ form.withdraw_address.id_for_label }}">Withdrawal Address:</label>
+            {{ form.withdraw_address }} <br>
+        </div>
+
+        <!-- Withdrawal Amount -->
+        <div class="form-group" id="amount">
+            <label for="{{ form.withdraw_amount.id_for_label }}">Withdrawal Amount:</label>
+            {{ form.withdraw_amount }} <br>
+        </div>
+
+        <!-- Bank Name -->
+        <div class="form-group" id="bank-content">
+            <label for="{{ form.bank_account_number.id_for_label }}">Account Number:</label>
+            {{ form.bank_account_number }} <br>
+            <label for="{{ form.bank_name.id_for_label }}">Bank Name:</label>
+            {{ form.bank_name }} <br>
+            <label for="{{ form.swift_code.id_for_label }}">Swift Code: </label>
+            {{ form.swift_code }}
+            
+        </div>
+
+        <!--Process button-->
+        <p id="pbtn" style="width: 200px; display: none;">Process Withdrawal</p>
+       
+        
+    
+ <!-- PIN -->
+       <div class="form-group" id="inputPin">
+            <label for="{{ form.pin.id_for_label }}">Withdrawal PIN:</label>
+            {{ form.pin }}
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="btn" style="display: none;">Confirm</button>
+    </form>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectInput = document.getElementById('select-input');
+        const amountInput = document.getElementById('amount');
+        const withdrawAddressInput = document.getElementById('withdraw_address');
+        const bankContent = document.getElementById('bank-content');
+        const inputPin = document.getElementById('inputPin');
+        const icon = document.getElementById('icon');
+        const loader = document.getElementById('loader');
+        const withdrawalForm = document.getElementById('withdrawal_form');
+        const selectField = selectInput.querySelector('select');
+        const withdrawAddressField = withdrawAddressInput.querySelector('input');
+        const btn = document.getElementById('btn');
+        const pbtn = document.getElementById('pbtn');
+        const form = document.getElementById('withdrawal_form');
+        const list_content = document.getElementById('list_content');
+        const bankAccountField = bankContent.querySelector('input[id="bank_account"]');
+        const bankNameField = bankContent.querySelector('input[id="bank_name"]');
+        const swiftCodeField = bankContent.querySelector('input[id="swift_code"]');
+
+        // Initially hide all optional fields
+        amountInput.style.display = 'none';
+        withdrawAddressInput.style.display = 'none';
+        bankContent.style.display = 'none';
+        inputPin.style.display = 'none';
+        icon.style.display = 'none';
+        loader.style.display = 'none';
+        withdrawalForm.style.display = 'block';
+
+
+        
+       selectField.addEventListener('change', function() {
+            const selectedValue = this.value;
+
+            // Hide all optional fields initially
+            amountInput.style.display = 'none';
+            withdrawAddressInput.style.display = 'none';
+            bankContent.style.display = 'none';
+            inputPin.style.display = 'none';
+            icon.style.display = 'none';
+            btn.style.display = 'none';
+            pbtn.style.display = 'none';
+            loader.style.display = 'block';
+            setTimeout(() => {
+                loader.style.display = 'none';
+                if (selectedValue === 'BTC') {
+                    icon.src = '{% static "assets/images/team/btc.png" %}';
+                    icon.style.display = 'block';
+                    withdrawAddressInput.style.display = 'block';
+    
+                    pbtn.style.display = 'block';
+
+                    bankAccountField.attributes.removeNamedItem('required');
+                    bankNameField.attributes.removeNamedItem('required');
+                    swiftCodeField.attributes.removeNamedItem('required');
+                } else if (selectedValue === 'ETH') {
+                    icon.src = '{% static "assets/images/team/eth.png" %}';
+                    icon.style.display = 'block';
+                    withdrawAddressInput.style.display = 'block';
+                    pbtn.style.display = 'block';
+
+                    bankAccountField.attributes.removeNamedItem('required');
+                    bankNameField.attributes.removeNamedItem('required');
+                    swiftCodeField.attributes.removeNamedItem('required');
+                } else if (selectedValue === 'USDT') {
+                    icon.src = 'static "assets/images/team/usdt.png" %}';
+                    icon.style.display = 'block';
+                    withdrawAddressInput.style.display = 'block';
+                    pbtn.style.display = 'block';
+                    bankAccountField.attributes.removeNamedItem('required');
+                    bankNameField.attributes.removeNamedItem('required');
+                    swiftCodeField.attributes.removeNamedItem('required');
+                } else if (selectedValue === 'Bank') {
+                    icon.src = '{% static "assets/images/team/bank.png" %}';
+                    icon.style.display = 'block';
+                    bankContent.style.display = 'block';
+                    pbtn.style.display = 'block';
+                    withdrawAddressField.attributes.removeNamedItem('required');
+
+                } else {
+                   alert('Please select a valid withdrawal method.');
+                }
+            }, 5000); // Simulate loading delay
+        });
+
+       // Process button click event
+       pbtn.addEventListener('click', function() {
+            amountInput.style.display = 'block';
+            inputPin.style.display = 'block';
+            btn.style.display = 'block';
+            pbtn.style.display = 'none';
+            form.style.height = 'auto';
+            selectField.style.pointerEvents = 'none'; // Disable further changes
+            selectField.style.display = 'none';
+            bankContent.style.display = 'none';
+            withdrawAddressInput.style.display = 'none';
+
+       });
+
+     // Form submission event
+     form.addEventListener('submit', function(event) {
+            loader.style.display = 'block';
+            setTimeout(() => {
+                loader.style.display = 'none';
+                form.submit();
+            }, 5000); // Simulate loading delay
+     }); 
+    });
+</script>
+
+    
+{% endblock main %}

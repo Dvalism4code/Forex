@@ -1,0 +1,223 @@
+{% extends 'account/users/dashboard.html' %}
+
+
+
+{% block side-panel-right %}
+    
+{% endblock side-panel-right %}
+    
+  
+  {% block trading_view %}
+    
+  {% endblock trading_view %}
+
+
+
+{% block main %}
+{% load static  %}
+
+<div class="fixed-width"><br><br><br>
+    <br>
+    <script>
+        $(".select7").select7();
+    </script>
+<style>
+.container {
+    padding: 15px;
+    background: var(--dark-blue);
+    border-radius: 5px;
+    color: var(--text-color);
+   
+}
+
+form label {
+    margin: 30px 0;
+}
+form input {
+    padding: 10px; 
+    border-radius: 3px;
+    border: 1px solid var(--hover);
+    display: block;
+    width: 100%;
+    background: var(--primary);
+    color: var(--text-color);
+    margin: 10px 0;
+    font-size: 12px;
+}
+span {
+        display: block;
+        font-size: small;
+        font-style: italic;
+    }
+
+form button {
+    background: dodgerblue;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    color: white;
+    border: 1px solid dodgerblue;
+    border-radius: 3px;
+    margin: 40px 0;
+    font-weight: 400;
+}
+button:hover{
+    cursor: pointer;
+}
+
+input.form-error::placeholder {
+    color: red;
+    font-style: italic;
+    font-size: small;
+    text-transform: lowercase;
+}
+
+  @media screen and (min-width: 768px) {
+        .fixed-width {
+            width: 100%;
+            margin: 30px 30px;
+        }
+        
+        .side-panel-right {
+            display: none;
+            width: 30%;
+        }
+
+        .container {
+            width: 50%;
+            margin: 0 auto;
+            height: 500px;
+            padding: 20px;
+        }
+
+        h4 {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+        form input{
+            padding: 20px;
+            margin-bottom: 10px;
+        }
+
+        
+        form label {
+           padding-bottom: 30px;
+            font-weight: bold;
+            font-size: 1.4rem;
+        }
+
+        .form-pin {
+            margin-bottom: 35px;
+        }
+
+        
+    }
+
+    @media screen and (min-width: 1200px) {
+        .fixed-width {
+            width: 80%;
+            transform: translateX(5%);
+            margin: 0 15%;
+        }
+
+        .side-panel-left {
+            width: 20%;
+            display: block;
+        }
+        .container {
+            width: 50%;
+            margin: 0 auto;
+            height: 500px;
+        }
+
+
+        h4 {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+        form input{
+            padding: 20px;
+            margin-bottom: 10px;
+        }
+
+        
+        form label {
+           
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .form-pin {
+            margin-bottom: 35px;
+        }
+       
+    }
+
+</style>
+
+
+
+
+<div class="container">
+
+
+    <h4>Set Withdrawal Pin </h4><br>
+    <form action="{% url 'set_withdrawal_pin' %}" method="POST" enctype="multipart/form-data" id="form">
+        {% csrf_token %}
+       
+
+      
+    
+        <div class="form-pin">
+            <label for="{{ form.new_pin.id_for_label }}">PIN</label>
+            {{ form.new_pin }}
+            
+        </div>
+    
+        <div class="form-pin">
+            <label for="{{ form.confirm_pin.id_for_label }}">Confirm PIN</label>
+            {{ form.confirm_pin }}
+            
+        </div>
+    
+        
+        <button type="submit" id="pinBtn">Create Pin</button>
+    </form>
+</div>
+
+{{ form.errors|json_script:"form-errors"}}
+<script>
+    var formErrors = document.getElementById('form-errors');
+    var pin = document.getElementById('pin');
+    var confirmPin = document.getElementById('confirm_pin');
+    if (formErrors) {
+        var errors = JSON.parse(formErrors.textContent);
+       if (Object.keys(errors).length > 0) {
+    // There are errors
+    pin.classList.add('form-error');
+    confirmPin.classList.add('form-error');
+    pin.style.border = '1px solid red';
+    confirmPin.style.border = '1px solid red';
+    pin.value = '';
+    confirmPin.value = '';
+    pin.placeholder = 'PINS DO NOT MATCH';
+    confirmPin.placeholder = 'PINS DO NOT MATCH';
+} else {
+    // No errors
+    pin.classList.remove('form-error');
+    confirmPin.classList.remove('form-error');
+    pin.style.border = '';
+    confirmPin.style.border = '';
+    pin.placeholder = 'Enter your PIN';
+    confirmPin.placeholder = 'Confirm your PIN';
+}
+ 
+           
+    }
+ </script>
+
+
+{% endblock main %}
+
